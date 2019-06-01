@@ -13,7 +13,6 @@ const ansi = require('ansicolor').nice
 const testnet = "https://rinkeby.infura.io/v3/66f5470a5e6f41b0b4696e96643d1d31"
 
 const web3 = new Web3( new Web3.providers.HttpProvider(testnet) )
-web3.eth.defaultAccount = process.env.WALLET_ADDRESS
 
 const amountToSend = 0.001
 
@@ -36,7 +35,10 @@ const getCurrentGasPrices = async () => {
     return prices
 }
 
-module.exports.makeTransaction = async (data, logsEnabled = false) => {
+module.exports.makeTransaction = async (data, fromPvtKey, fromPubKey, toPubKey, logsEnabled = false) => {
+
+    // web3.eth.defaultAccount = process.env.WALLET_ADDRESS
+    web3.eth.defaultAccount = fromPubKey
     let myBalanceWei = web3.eth.getBalance(web3.eth.defaultAccount).toNumber()
     let myBalance = web3.fromWei(myBalanceWei, 'ether')
 
@@ -51,7 +53,8 @@ module.exports.makeTransaction = async (data, logsEnabled = false) => {
     let gasPrices = await getCurrentGasPrices()
 
     let details = {
-        "to": process.env.DESTINATION_WALLET_ADDRESS,
+        "to": toPubKey,
+        // "to": process.env.DESTINATION_WALLET_ADDRESS,
         "value": web3.toHex( web3.toWei(amountToSend, 'ether') ),
         "gas": 210000,
         "gasPrice": gasPrices.high * 1000000000, // converts the gwei price to wei
@@ -62,7 +65,8 @@ module.exports.makeTransaction = async (data, logsEnabled = false) => {
 
     const transaction = new EthereumTx(details)
 
-    transaction.sign( Buffer.from(process.env.WALLET_PRIVATE_KEY, 'hex') )
+    transaction.sign( Buffer.from(fromPvtKey, 'hex') )
+    // transaction.sign( Buffer.from(process.env.WALLET_PRIVATE_KEY, 'hex') )
 
     const serializedTransaction = transaction.serialize()
 

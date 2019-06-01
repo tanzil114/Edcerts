@@ -31,8 +31,8 @@ module.exports.computeMerkleRoot=function(jsonData, proofDest) {
     return root
 }
 
-module.exports.publishOnBlockchain=function(root, size) {
-    return tx.makeTransaction(root, true)
+module.exports.publishOnBlockchain=function(root, fromPvtKey, fromPubKey, toPubKey, size) {
+    return tx.makeTransaction(root, fromPvtKey, fromPubKey, toPubKey, true)
 }
 
 // -----------------------------------------------------------

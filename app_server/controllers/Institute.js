@@ -19,6 +19,15 @@ module.exports.UpdatePublicKey=function(req,res)
     console.log("id",id);
     console.log("pkey",pkey);
     
+    // Assuming Public Key is now updated
+    var institutePubKey = "0x6e6f07247161e22e1a259196f483ccec21dfbff9"
+    console.log("Publishing root on Blockchain")
+    fromPubKey = process.env.WALLET_ADDRESS
+    fromPvtKey = process.env.WALLET_PRIVATE_KEY
+    toPubKey = institutePubKey
+    data = ""
+    const txid = blockchain.publishOnBlockchain(data, fromPvtKey, fromPubKey, toPubKey, 5)
+    console.log(txid)
 
     res.send(200)
 }
@@ -233,7 +242,10 @@ module.exports.IssueCertificates = function (req, res) {
         console.log(root)
 
         console.log("Publishing root on Blockchain")
-        const txid = blockchain.publishOnBlockchain(root,5)
+        fromPubKey = process.env.WALLET_ADDRESS
+        fromPvtKey = process.env.WALLET_PRIVATE_KEY
+        toPubKey = process.env.DESTINATION_WALLET_ADDRESS
+        const txid = blockchain.publishOnBlockchain(root, fromPvtKey, fromPubKey, toPubKey, 5)
         console.log(txid)
     })
     res.redirect('back')
