@@ -73,8 +73,8 @@ function verify (proof, leaf, rootToCompare, digestFn) {
   else
     proof[1] = leaf
 
-  console.log("Update Proof\n")
-  console.log(proof.map(x => x && x.toString('hex')))
+  // console.log("Update Proof\n")
+  // console.log(proof.map(x => x && x.toString('hex')))
   
   for (var i = 0; i < proof.length - 1; i += 2) {
     var left = proof[i] || hash

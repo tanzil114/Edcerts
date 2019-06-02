@@ -143,7 +143,7 @@ router.get('/Institute/Dashboard', checkIfInstituteTier, function (req, res) {
   });
 });
 
-router.get('/Institute/Recipients', checkIfInstituteTier, Institute.loadRecepient);
+router.get('/Institute/Recipients', checkIfInstituteTier  , Institute.loadRecepient);
 
 router.get('/Institute/Certificate/Issued', function (req, res) {
   var InstituteName = req.session.name;
@@ -168,7 +168,10 @@ router.post('/sendEmail', checkIfInstituteTier, Institute.sendEmail);
 
 router.patch('/UpdatePublicKey/:id/:pkey', checkIfInstituteTier, Institute.UpdatePublicKey);
 
-router.get('/GetCertificate/:pkey', checkIfInstituteTier, Institute.GetCertificates);
+router.get('/GetDegrees/:pkey', checkIfInstituteTier, Institute.GetDegrees);
 
+router.get('/ViewDegree/:degreeid', Institute.ViewDegree);
+
+router.get('/VerifyDegree/:degreeid', Institute.VerifyDegree);
 
 module.exports = router;
